@@ -7,6 +7,6 @@ import javax.swing.*;
 public final class Stocks extends JPanel {
     public Stocks(final Trader trader)
     {
-        
+
     }
 }

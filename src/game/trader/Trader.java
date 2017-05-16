@@ -8,17 +8,24 @@ import java.util.Vector;
 public final class Trader extends Observable {
     private static final int DEFAULT_STOCK_COUNT = 5;
     private static final int DEFAULT_FREQUENCY = 500;
-    private static final int DEFAULT_BALANCE = 1000;
+    private static final int DEFAULT_BALANCE = 120000;
     private static final int DEFAULT_MAX_TICKS = 240;
 
-    private boolean paused = true;
-    private int tick = 0;
-    private int maxTicks;
-    private int stockCount;
-    private int frequency;
-    private int balance;
+    private boolean paused;
+    private int tick;
+    private int maxTicks, maxTicksInitial;
+    private int stockCount, stockCountInitial;
+    private int frequency, frequencyInitial;
+    private int balance, balanceInitial;
 
     private Vector<Stock> stocks = new Vector<>();
+
+    public enum Change {
+        INITIALIZED,
+        PAUSE,
+        RESUME,
+        TICK
+    }
 
     public Trader()
     {
@@ -27,16 +34,29 @@ public final class Trader extends Observable {
 
     public Trader(final int stockCount, final int frequency, final int balance, final int maxTicks)
     {
-        this.stockCount = stockCount;
-        this.frequency = frequency;
-        this.balance = balance;
-        this.maxTicks = maxTicks;
+        stockCountInitial = stockCount;
+        frequencyInitial = frequency;
+        balanceInitial = balance;
+        maxTicksInitial = maxTicks;
 
-        reset();
+        setup();
     }
 
-    private void reset()
+    public void initialize()
     {
+        update(Change.INITIALIZED);
+    }
+
+    private void setup()
+    {
+        tick = 0;
+        paused = true;
+
+        maxTicks = maxTicksInitial;
+        stockCount = stockCountInitial;
+        frequency = frequencyInitial;
+        balance = balanceInitial;
+
         stocks.clear();
 
         for(int i = 0; i < stockCount; ++i)
@@ -45,7 +65,29 @@ public final class Trader extends Observable {
 
     public void setPaused(final boolean paused)
     {
-        this.paused = paused;
+        if(this.paused != paused) {
+            this.paused = paused;
+
+            if(paused)
+                update(Change.PAUSE);
+            else
+                update(Change.RESUME);
+        }
+    }
+
+    public int getCash()
+    {
+        return balance;
+    }
+
+    public int getStocksWorth()
+    {
+        int total = 0;
+
+        for(final Stock s : stocks)
+            total += s.getPrice();
+
+        return total;
     }
 
     private void addStock()
@@ -53,9 +95,9 @@ public final class Trader extends Observable {
         stocks.add(new Stock());
     }
 
-    private void update()
+    private void update(final Change change)
     {
         setChanged();
-        notifyObservers();
+        notifyObservers(change);
     }
 }

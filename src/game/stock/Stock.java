@@ -4,6 +4,11 @@ import java.util.Vector;
 
 public final class Stock {
     private String title;
-    private int owned = 0;
+    private int price;
     private Vector<StockTick> ticks = new Vector<>();
+
+    public int getPrice()
+    {
+        return price;
+    }
 }

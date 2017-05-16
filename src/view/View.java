@@ -83,9 +83,13 @@ final class View extends JFrame {
 
     private void createUI()
     {
+        final Trader trader = new Trader();
+
         setSize(WIDTH, HEIGHT);
-        add(new Wrapper(new Trader()));
+        add(new Wrapper(trader));
         setCentered();
+
+        trader.initialize();
 
         setVisible(true);
     }
