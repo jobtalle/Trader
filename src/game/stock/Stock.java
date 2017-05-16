@@ -11,4 +11,9 @@ public final class Stock {
     {
         return price;
     }
+
+    public void tick()
+    {
+
+    }
 }

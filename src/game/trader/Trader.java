@@ -3,6 +3,8 @@ package game.trader;
 import game.stock.Stock;
 
 import java.util.Observable;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 
 public final class Trader extends Observable {
@@ -18,6 +20,7 @@ public final class Trader extends Observable {
     private int frequency, frequencyInitial;
     private long balance, balanceInitial;
 
+    private Timer ticker;
     private Vector<Stock> stocks = new Vector<>();
 
     public enum Change {
@@ -44,23 +47,15 @@ public final class Trader extends Observable {
 
     public void initialize()
     {
+        ticker = new Timer();
+        ticker.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                tryTick();
+            }
+        }, 0, frequency);
+
         update(Change.INITIALIZED);
-    }
-
-    private void setup()
-    {
-        tick = 0;
-        paused = true;
-
-        maxTicks = maxTicksInitial;
-        stockCount = stockCountInitial;
-        frequency = frequencyInitial;
-        balance = balanceInitial;
-
-        stocks.clear();
-
-        for(int i = 0; i < stockCount; ++i)
-            addStock();
     }
 
     public void setPaused(final boolean paused)
@@ -88,6 +83,43 @@ public final class Trader extends Observable {
             total += s.getPrice();
 
         return total;
+    }
+
+    private void tryTick()
+    {
+        if(!paused) {
+            System.out.print('.');
+
+            if(++tick == maxTicks) {
+                end();
+            } else {
+                update(Change.TICK);
+
+                for (final Stock s : stocks)
+                    s.tick();
+            }
+        }
+    }
+
+    private void end()
+    {
+        ticker.cancel();
+    }
+
+    private void setup()
+    {
+        tick = 0;
+        paused = true;
+
+        maxTicks = maxTicksInitial;
+        stockCount = stockCountInitial;
+        frequency = frequencyInitial;
+        balance = balanceInitial;
+
+        stocks.clear();
+
+        for(int i = 0; i < stockCount; ++i)
+            addStock();
     }
 
     private void addStock()
