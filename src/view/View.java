@@ -1,10 +1,13 @@
 package view;
 
+import game.trader.Trader;
+
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-public class View extends JFrame {
+final class View extends JFrame {
     private static final String TITLE = "Trader";
     private static final int WIDTH = 1024;
     private static final int HEIGHT = 768;
@@ -14,12 +17,21 @@ public class View extends JFrame {
         new View();
     }
 
-    public View()
+    private View()
     {
         super(TITLE);
 
         createUI();
         addListeners();
+    }
+
+    private void setCentered()
+    {
+        Dimension resolution = Toolkit.getDefaultToolkit().getScreenSize();
+
+        setLocation(
+                (int)(resolution.getWidth() - getWidth()) / 2,
+                (int)(resolution.getHeight() - getHeight()) / 2);
     }
 
     private void close()
@@ -72,6 +84,9 @@ public class View extends JFrame {
     private void createUI()
     {
         setSize(WIDTH, HEIGHT);
+        add(new Wrapper(new Trader()));
+        setCentered();
+
         setVisible(true);
     }
 }
