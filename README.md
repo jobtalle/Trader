@@ -1,0 +1,2 @@
+# Trader
+Stock trading game
