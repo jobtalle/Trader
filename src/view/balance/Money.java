@@ -30,6 +30,8 @@ final class Money extends JPanel implements Observer {
         switch((Trader.Change) arg) {
             case TICK:
             case INITIALIZED:
+            case BUY:
+            case SELL:
                 updateText((Trader) o);
                 break;
         }

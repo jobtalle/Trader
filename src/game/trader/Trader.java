@@ -2,16 +2,16 @@ package game.trader;
 
 import game.stock.Stock;
 
-import java.util.Observable;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Vector;
+import java.awt.*;
+import java.util.*;
 
 public final class Trader extends Observable {
-    private static final int DEFAULT_STOCK_COUNT = 5;
+    private static final int DEFAULT_STOCK_COUNT = 6;
     private static final int DEFAULT_FREQUENCY = 500;
     private static final long DEFAULT_BALANCE = 100000L;
     private static final int DEFAULT_MAX_TICKS = 240;
+    private static final float COLOR_STOCK_SATURATION = 0.6f;
+    private static final float COLOR_STOCK_BRIGHTNESS = 0.9f;
 
     private boolean paused;
     private int tick;
@@ -27,7 +27,10 @@ public final class Trader extends Observable {
         INITIALIZED,
         PAUSE,
         RESUME,
-        TICK
+        TICK,
+        ADD_STOCK,
+        BUY,
+        SELL
     }
 
     public Trader()
@@ -55,6 +58,8 @@ public final class Trader extends Observable {
             }
         }, 0, frequency);
 
+        createStocks();
+
         update(Change.INITIALIZED);
     }
 
@@ -70,6 +75,29 @@ public final class Trader extends Observable {
         }
     }
 
+    public void buy(final Stock stock)
+    {
+        if(balance >= stock.getPrice()) {
+            balance -= stock.getPrice();
+            stock.buy();
+
+            update(Change.BUY);
+        }
+    }
+
+    public void sell(final Stock stock)
+    {
+        balance += stock.getPrice();
+        stock.sell();
+
+        update(Change.SELL);
+    }
+
+    public Vector<Stock> getStocks()
+    {
+        return stocks;
+    }
+
     public long getCash()
     {
         return balance;
@@ -80,7 +108,7 @@ public final class Trader extends Observable {
         long total = 0;
 
         for(final Stock s : stocks)
-            total += s.getPrice();
+            total += s.getPrice() * s.getOwned();
 
         return total;
     }
@@ -125,14 +153,34 @@ public final class Trader extends Observable {
         balance = balanceInitial;
 
         stocks.clear();
-
-        for(int i = 0; i < stockCount; ++i)
-            addStock();
     }
 
-    private void addStock()
+    private void createStocks()
     {
-        stocks.add(new Stock());
+        Stack<Color> colors = getVaryingColorStack(stockCount, COLOR_STOCK_SATURATION, COLOR_STOCK_BRIGHTNESS);
+
+        for(int i = 0; i < stockCount; ++i)
+            addStock(colors.pop());
+    }
+
+    private Stack<Color> getVaryingColorStack(final int count, final float saturation, final float brightness)
+    {
+        Stack<Color> stack = new Stack<>();
+        final float offset = (float) Math.random();
+
+        for(int i = 0; i < count; ++i)
+            stack.add(Color.getHSBColor(((float)i / count + offset) % 1, saturation, brightness));
+
+        Collections.shuffle(stack);
+
+        return stack;
+    }
+
+    private void addStock(final Color color)
+    {
+        stocks.add(new Stock(color, "Stock", 20000, stocks.size() + 1));
+
+        update(Change.ADD_STOCK);
     }
 
     private void update(final Change change)

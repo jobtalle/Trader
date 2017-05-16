@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 final class TimerButtons extends JPanel {
     private static final String TITLE_START = "Start";
     private static final String TITLE_STOP = "Stop";
+    private static final int KEY_TOGGLE_PAUSE = KeyEvent.VK_SPACE;
 
     private JButton buttonStart = new JButton(TITLE_START);
     private JButton buttonStop = new JButton(TITLE_STOP);
@@ -20,7 +21,7 @@ final class TimerButtons extends JPanel {
             @Override
             public boolean dispatchKeyEvent(KeyEvent e) {
                 if(e.getID() == KeyEvent.KEY_PRESSED)
-                    if(e.getKeyCode() == KeyEvent.VK_SPACE)
+                    if(e.getKeyCode() == KEY_TOGGLE_PAUSE)
                         if(timer.isPaused())
                             buttonStart.doClick();
                         else
@@ -34,6 +35,9 @@ final class TimerButtons extends JPanel {
     private void createUI(final Timer timer)
     {
         setLayout(new GridLayout(1, 2));
+
+        buttonStart.setFocusable(false);
+        buttonStop.setFocusable(false);
 
         add(buttonStart);
         add(buttonStop);

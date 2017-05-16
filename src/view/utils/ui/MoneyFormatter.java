@@ -17,7 +17,7 @@ public final class MoneyFormatter {
                     sb.insert(0, '0');
             }
 
-            if(--pointCounter == 0 && i > 0) {
+            if(--pointCounter == 0 && i > (money < 0 ? 1 : 0)) {
                 pointCounter = 3;
 
                 sb.insert(i, '.');
