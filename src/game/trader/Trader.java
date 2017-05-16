@@ -8,7 +8,7 @@ import java.util.Vector;
 public final class Trader extends Observable {
     private static final int DEFAULT_STOCK_COUNT = 5;
     private static final int DEFAULT_FREQUENCY = 500;
-    private static final int DEFAULT_BALANCE = 120000;
+    private static final long DEFAULT_BALANCE = 100000L;
     private static final int DEFAULT_MAX_TICKS = 240;
 
     private boolean paused;
@@ -16,7 +16,7 @@ public final class Trader extends Observable {
     private int maxTicks, maxTicksInitial;
     private int stockCount, stockCountInitial;
     private int frequency, frequencyInitial;
-    private int balance, balanceInitial;
+    private long balance, balanceInitial;
 
     private Vector<Stock> stocks = new Vector<>();
 
@@ -32,7 +32,7 @@ public final class Trader extends Observable {
         this(DEFAULT_STOCK_COUNT, DEFAULT_FREQUENCY, DEFAULT_BALANCE, DEFAULT_MAX_TICKS);
     }
 
-    public Trader(final int stockCount, final int frequency, final int balance, final int maxTicks)
+    public Trader(final int stockCount, final int frequency, final long balance, final int maxTicks)
     {
         stockCountInitial = stockCount;
         frequencyInitial = frequency;
@@ -75,7 +75,7 @@ public final class Trader extends Observable {
         }
     }
 
-    public int getCash()
+    public long getCash()
     {
         return balance;
     }

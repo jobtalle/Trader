@@ -3,9 +3,9 @@ package view.utils.ui;
 public final class MoneyFormatter {
     private static final String PREFIX = "€ ";
 
-    public static String intToMoney(final int money)
+    public static String intToMoney(final long money)
     {
-        final String moneyString = Integer.toString(money);
+        final String moneyString = Long.toString(money);
         StringBuilder sb = new StringBuilder(moneyString);
 
         int pointCounter = 5;
