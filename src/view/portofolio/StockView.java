@@ -15,6 +15,7 @@ final class StockView extends JPanel implements Observer {
 
     private JLabel title;
     private JLabel index;
+    private JLabel owned;
     private StockViewPrice price = new StockViewPrice();
     private StockButtons buttons;
 
@@ -34,7 +35,18 @@ final class StockView extends JPanel implements Observer {
             case INITIALIZED:
                 price.setPrice(stock);
                 break;
+            case BUY:
+            case SELL:
+                updateOwned();
+                break;
         }
+    }
+
+    private void updateOwned()
+    {
+        owned.setText(Integer.toString(stock.getOwned()));
+
+        updateUI();
     }
 
     private void createUI(final Trader trader)
@@ -50,6 +62,12 @@ final class StockView extends JPanel implements Observer {
         index.setFont(UIDefaults.FONT_MEDIUM);
         index.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        owned = new JLabel();
+        owned.setFont(UIDefaults.FONT_BIG);
+        owned.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        updateOwned();
+
         buttons = new StockButtons(trader, stock);
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -57,5 +75,6 @@ final class StockView extends JPanel implements Observer {
         add(index);
         add(price);
         add(buttons);
+        add(owned);
     }
 }
