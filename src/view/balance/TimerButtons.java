@@ -3,6 +3,7 @@ package view.balance;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 final class TimerButtons extends JPanel {
     private static final String TITLE_START = "Start";
@@ -14,6 +15,20 @@ final class TimerButtons extends JPanel {
     TimerButtons(final Timer timer)
     {
         createUI(timer);
+
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent e) {
+                if(e.getID() == KeyEvent.KEY_PRESSED)
+                    if(e.getKeyCode() == KeyEvent.VK_SPACE)
+                        if(timer.isPaused())
+                            buttonStart.doClick();
+                        else
+                            buttonStop.doClick();
+
+                return false;
+            }
+        });
     }
 
     private void createUI(final Timer timer)

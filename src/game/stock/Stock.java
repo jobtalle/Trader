@@ -4,10 +4,10 @@ import java.util.Vector;
 
 public final class Stock {
     private String title;
-    private int price;
+    private long price;
     private Vector<StockTick> ticks = new Vector<>();
 
-    public int getPrice()
+    public long getPrice()
     {
         return price;
     }

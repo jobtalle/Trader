@@ -18,7 +18,8 @@ final class Timer extends JPanel implements Observer {
     private static final Color COLOR_TIME_FLOWING = Color.ORANGE;
     private static final Color COLOR_TIME_PAUSED = Color.DARK_GRAY;
     private static final Color COLOR_BORDER = Color.DARK_GRAY;
-    private static final Color COLOR_TEXT = Color.WHITE;
+    private static final Color COLOR_TEXT_FLOWING = Color.BLACK;
+    private static final Color COLOR_TEXT_PAUSED = Color.WHITE;
     private static final BasicStroke STROKE_BORDER = new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
     private float timePassed = 0;
@@ -43,9 +44,33 @@ final class Timer extends JPanel implements Observer {
         trader.setPaused(true);
     }
 
+    public boolean isPaused()
+    {
+        return paused;
+    }
+
     @Override
     public void update(Observable o, Object arg) {
+        final Trader trader = (Trader) o;
 
+        switch((Trader.Change)arg) {
+            case TICK:
+            case INITIALIZED:
+                timePassed = (float)trader.getTick() / trader.getMaxTicks();
+
+                updateUI();
+                break;
+            case PAUSE:
+                paused = true;
+
+                updateUI();
+                break;
+            case RESUME:
+                paused = false;
+
+                updateUI();
+                break;
+        }
     }
 
     @Override
@@ -74,7 +99,10 @@ final class Timer extends JPanel implements Observer {
                 INNER_RADIUS * 2);
 
         g2d.setFont(UIDefaults.FONT_BIG);
-        g2d.setColor(COLOR_TEXT);
+        if(paused)
+            g2d.setColor(COLOR_TEXT_PAUSED);
+        else
+            g2d.setColor(COLOR_TEXT_FLOWING);
         StringRenderUtils.drawCenteredString(g2d, getCenterText(), getVisibleRect());
 
         g2d.setStroke(STROKE_BORDER);

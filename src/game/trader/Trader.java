@@ -75,9 +75,9 @@ public final class Trader extends Observable {
         return balance;
     }
 
-    public int getStocksWorth()
+    public long getStocksWorth()
     {
-        int total = 0;
+        long total = 0;
 
         for(final Stock s : stocks)
             total += s.getPrice();
@@ -85,11 +85,19 @@ public final class Trader extends Observable {
         return total;
     }
 
+    public int getTick()
+    {
+        return tick;
+    }
+
+    public int getMaxTicks()
+    {
+        return maxTicks;
+    }
+
     private void tryTick()
     {
         if(!paused) {
-            System.out.print('.');
-
             if(++tick == maxTicks) {
                 end();
             } else {

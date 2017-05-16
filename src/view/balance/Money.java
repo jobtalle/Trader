@@ -61,7 +61,7 @@ final class Money extends JPanel implements Observer {
     private void updateText(final Trader trader)
     {
         final long cash = trader.getCash();
-        final int invested = trader.getStocksWorth();
+        final long invested = trader.getStocksWorth();
 
         fieldCash.setText(MoneyFormatter.intToMoney(cash));
         fieldInvested.setText(MoneyFormatter.intToMoney(invested));
