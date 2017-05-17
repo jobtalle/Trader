@@ -26,19 +26,25 @@ final class StocksGraph extends JPanel implements Observer {
     @Override
     public void paint(Graphics g)
     {
-        g.setColor(COLOR_BACKGROUND);
-        g.fillRect(0, 0, getWidth(), getHeight());
+        Graphics2D g2d = (Graphics2D) g;
 
-        g.setColor(COLOR_GRID);
+        g2d.setRenderingHints(new RenderingHints(
+                RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON));
+
+        g2d.setColor(COLOR_BACKGROUND);
+        g2d.fillRect(0, 0, getWidth(), getHeight());
+
+        g2d.setColor(COLOR_GRID);
 
         for(int x = getWidth(); x > 0; x -= RESOLUTION)
-            g.drawLine(x, 0, x, getHeight());
+            g2d.drawLine(x, 0, x, getHeight());
 
         for(int y = getHeight(); y > 0; y -= RESOLUTION)
-            g.drawLine(0, y, getWidth(), y);
+            g2d.drawLine(0, y, getWidth(), y);
 
         for(final Stock s : trader.getStocks())
-            drawGraph((Graphics2D) g, s);
+            drawGraph(g2d, s);
     }
 
     @Override

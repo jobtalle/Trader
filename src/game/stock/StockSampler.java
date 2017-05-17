@@ -9,7 +9,7 @@ final class StockSampler {
 
     StockSampler()
     {
-        octaves.push(new StockNoiseOctave(20, 10000));
+        octaves.push(new StockNoiseOctave(20, 20000));
         octaves.push(new StockNoiseOctave(15, 10000));
         octaves.push(new StockNoiseOctave(10, 6000));
         octaves.push(new StockNoiseOctave(2, 1000));
@@ -17,7 +17,7 @@ final class StockSampler {
 
     long sample()
     {
-        int result = 10000;
+        int result = 6000;
 
         for(final StockNoiseOctave octave : octaves)
             result += octave.sample(n);
