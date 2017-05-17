@@ -67,7 +67,7 @@ final class StocksGraph extends JPanel implements Observer {
         final float priceScale = (float)getHeight() / Stock.MAX_VALUE;
 
         int tickIndex = stock.getTicks().size();
-        for(int x = getWidth(); x > 0; x -= RESOLUTION) {
+        for(int x = getWidth(); x > -RESOLUTION; x -= RESOLUTION) {
             if(--tickIndex < 1)
                 break;
 

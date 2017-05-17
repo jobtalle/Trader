@@ -7,6 +7,8 @@ import view.utils.ui.UIDefaults;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -26,6 +28,7 @@ final class StockView extends JPanel implements Observer {
         this.stock = stock;
 
         createUI(trader);
+        addListeners(trader, stock);
     }
 
     @Override
@@ -74,5 +77,15 @@ final class StockView extends JPanel implements Observer {
         add(price);
         add(buttons);
         add(owned);
+    }
+
+    private void addListeners(final Trader trader, final Stock stock)
+    {
+        addMouseWheelListener(e -> {
+            if(e.getWheelRotation() < 0)
+                trader.buy(stock);
+            else
+                trader.sell(stock);
+        });
     }
 }

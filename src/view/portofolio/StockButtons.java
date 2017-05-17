@@ -5,6 +5,8 @@ import game.trader.Trader;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 final class StockButtons extends JPanel {
     private static final String TITLE_BUY = "Buy";
@@ -18,8 +20,7 @@ final class StockButtons extends JPanel {
         createUI(trader, stock);
     }
 
-    private void createUI(final Trader trader, final Stock stock)
-    {
+    private void createUI(final Trader trader, final Stock stock) {
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
         buttonBuy.setFocusable(false);
