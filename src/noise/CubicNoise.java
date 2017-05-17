@@ -27,7 +27,7 @@ public final class CubicNoise {
     {
         final int xi = (int) Math.floor(x / octave);
         final float lerp = x / octave - xi;
-        
+
         return interpolate(
                 randomize(seed, tile(xi - 1, periodx), 0),
                 randomize(seed, tile(xi, periodx), 0),

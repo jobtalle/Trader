@@ -71,6 +71,11 @@ public final class Stock {
         return color;
     }
 
+    public Stack<StockTick> getTicks()
+    {
+        return ticks;
+    }
+
     public void tick()
     {
         ticks.push(new StockTick(sampler.sample()));
