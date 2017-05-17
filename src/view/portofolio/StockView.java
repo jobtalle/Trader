@@ -45,8 +45,6 @@ final class StockView extends JPanel implements Observer {
     private void updateOwned()
     {
         owned.setText(Integer.toString(stock.getOwned()));
-
-        updateUI();
     }
 
     private void createUI(final Trader trader)

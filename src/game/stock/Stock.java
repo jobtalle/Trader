@@ -4,23 +4,28 @@ import java.awt.*;
 import java.util.Stack;
 
 public final class Stock {
+    public static final long MIN_VALUE = 1;
+    public static final long MAX_VALUE = 40000;
+
     private Color color;
     private String title;
     private int owned = 0;
     private int index;
     private Stack<StockTick> ticks = new Stack<>();
+    private StockSampler sampler;
 
     public Stock(
             final Color color,
             final String title,
-            final long price,
             final int index)
     {
         this.color = color;
         this.title = title;
         this.index = index;
 
-        ticks.push(new StockTick(price));
+        sampler = new StockSampler();
+
+        ticks.push(new StockTick(sampler.sample()));
     }
 
     public void buy()
@@ -41,7 +46,7 @@ public final class Stock {
     public long getDifference()
     {
         if(ticks.size() > 1)
-            return ticks.elementAt(0).getPrice() - ticks.elementAt(1).getPrice();
+            return ticks.elementAt(ticks.size() - 1).getPrice() - ticks.elementAt(ticks.size() - 2).getPrice();
         else
             return 0;
     }
@@ -68,6 +73,6 @@ public final class Stock {
 
     public void tick()
     {
-
+        ticks.push(new StockTick(sampler.sample()));
     }
 }

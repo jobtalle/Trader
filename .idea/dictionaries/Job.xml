@@ -2,6 +2,11 @@
   <dictionary name="Job">
     <words>
       <w>calibri</w>
+      <w>lerp</w>
+      <w>lerpx</w>
+      <w>lerpy</w>
+      <w>periodx</w>
+      <w>periody</w>
     </words>
   </dictionary>
 </component>

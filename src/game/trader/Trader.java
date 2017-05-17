@@ -87,10 +87,12 @@ public final class Trader extends Observable {
 
     public void sell(final Stock stock)
     {
-        balance += stock.getPrice();
-        stock.sell();
+        if(stock.getOwned() > 0) {
+            balance += stock.getPrice();
+            stock.sell();
 
-        update(Change.SELL);
+            update(Change.SELL);
+        }
     }
 
     public Vector<Stock> getStocks()
@@ -178,7 +180,7 @@ public final class Trader extends Observable {
 
     private void addStock(final Color color)
     {
-        stocks.add(new Stock(color, "Stock", 20000, stocks.size() + 1));
+        stocks.add(new Stock(color, "Stock", stocks.size() + 1));
 
         update(Change.ADD_STOCK);
     }
